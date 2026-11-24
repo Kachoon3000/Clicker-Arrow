@@ -1,4 +1,3 @@
-// Barème niveaux 1 à 10 (écart renforcé entre Régulier 750 et Confirmé 1500)
 const LEVELS = [
   { lvl: 1, title: "Archer Débutant", xp: 100, reward: "Couleur de base poignée" },
   { lvl: 2, title: "Archer Prometteur", xp: 300, reward: "Palette / Décocheur" },
@@ -12,18 +11,140 @@ const LEVELS = [
   { lvl: 10, title: "Grand Maître International", xp: 21000, reward: "Couronne suprême" }
 ];
 
+const MONSTER_NAMES = [
+  "Mannequin de Paille",
+  "Gobelin du Pas de Tir",
+  "Loup des Bois",
+  "Golem de Cible",
+  "Chevalier d'Acier",
+  "Gardien du Blason",
+  "Dragon du Pas de Tir"
+];
+
+const AI_DUEL_OPPONENTS = {
+  lvl1: {
+    id: "lvl1",
+    name: "IA Niveau 1",
+    targetScore: 233, //[cite: 6]
+    volleys: [
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 6]
+      [{ label: "6", pts: 6 }, { label: "5", pts: 5 }, { label: "5", pts: 5 }], //[cite: 6]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 6]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "5", pts: 5 }], //[cite: 6]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 6]
+      [{ label: "7", pts: 7 }, { label: "7", pts: 7 }, { label: "6", pts: 6 }], //[cite: 6]
+      [{ label: "8", pts: 8 }, { label: "8", pts: 8 }, { label: "8", pts: 8 }], //[cite: 6]
+      [{ label: "7", pts: 7 }, { label: "7", pts: 7 }, { label: "7", pts: 7 }], //[cite: 6]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 6]
+      [{ label: "8", pts: 8 }, { label: "8", pts: 8 }, { label: "8", pts: 8 }] //[cite: 6]
+    ]
+  },
+  lvl2: {
+    id: "lvl2",
+    name: "IA Niveau 2",
+    targetScore: 234, //[cite: 7]
+    volleys: [
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 7]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "6", pts: 6 }], //[cite: 7]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 7]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "5", pts: 5 }], //[cite: 7]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 7]
+      [{ label: "7", pts: 7 }, { label: "6", pts: 6 }, { label: "6", pts: 6 }], //[cite: 7]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 7]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "7", pts: 7 }], //[cite: 7]
+      [{ label: "10", pts: 10 }, { label: "8", pts: 8 }, { label: "8", pts: 8 }], //[cite: 7]
+      [{ label: "7", pts: 7 }, { label: "7", pts: 7 }, { label: "6", pts: 6 }] //[cite: 7]
+    ]
+  },
+  lvl3: {
+    id: "lvl3",
+    name: "IA Niveau 3",
+    targetScore: 260, //[cite: 8]
+    volleys: [
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "7", pts: 7 }], //[cite: 8]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "3", pts: 3 }], //[cite: 8]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "8", pts: 8 }, { label: "7", pts: 7 }, { label: "5", pts: 5 }], //[cite: 8]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 8]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }] //[cite: 8]
+    ]
+  },
+  lvl4: {
+    id: "lvl4",
+    name: "IA Niveau 4",
+    targetScore: 269, //[cite: 5]
+    volleys: [
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "8", pts: 8 }, { label: "7", pts: 7 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "8", pts: 8 }, { label: "6", pts: 6 }], //[cite: 5]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 5]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 5]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 5]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }] //[cite: 5]
+    ]
+  },
+  lvl5: {
+    id: "lvl5",
+    name: "IA Niveau 5",
+    targetScore: 269, //[cite: 9]
+    volleys: [
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "8", pts: 8 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "8", pts: 8 }, { label: "8", pts: 8 }], //[cite: 9]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "7", pts: 7 }], //[cite: 9]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "8", pts: 8 }, { label: "8", pts: 8 }], //[cite: 9]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 9]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "6", pts: 6 }] //[cite: 9]
+    ]
+  },
+  lvl6: {
+    id: "lvl6",
+    name: "IA Niveau 6",
+    targetScore: 272, //[cite: 10]
+    volleys: [
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 10]
+      [{ label: "9", pts: 9 }, { label: "8", pts: 8 }, { label: "7", pts: 7 }], //[cite: 10]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 10]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 10]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "9", pts: 9 }], //[cite: 10]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "5", pts: 5 }], //[cite: 10]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 10]
+      [{ label: "9", pts: 9 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }], //[cite: 10]
+      [{ label: "10", pts: 10 }, { label: "10", pts: 10 }, { label: "10", pts: 10 }], //[cite: 10]
+      [{ label: "10", pts: 10 }, { label: "9", pts: 9 }, { label: "9", pts: 9 }] //[cite: 10]
+    ]
+  }
+};
+
+const MONSTER_FIXED_HP = 30;
+const GOLD_PER_MONSTER = 30;
+const DUEL_MAX_ARROWS = 30;
 const STORAGE_KEY = "archer_xp_prototype_v1";
 
 let state = loadState();
-let currentVolley = []; // [{ label, pts }]
-let sessionArrows = []; // [{ label, pts }]
+let currentVolley = [];
+let sessionArrows = [];
+let combatArrows = [];
+let combatMode = "monsters";
+let selectedOpponentKey = "lvl1";
+let duelCurrentVolley = [];
+let duelCompletedVolleys = [];
 let claimBannerText = "";
 
-// Retourne le timestamp (en ms) du dernier Lundi à 00:01:00 passé par rapport à une date donnée
 function getLastMondayResetTimestamp(now = new Date()) {
   const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0);
-  const day = d.getDay(); // 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
-  const diffFromMonday = (day + 6) % 7; // Lundi -> 0, Mardi -> 1, ..., Dimanche -> 6
+  const day = d.getDay();
+  const diffFromMonday = (day + 6) % 7;
   d.setDate(d.getDate() - diffFromMonday);
 
   if (now.getTime() < d.getTime()) {
@@ -42,7 +163,9 @@ function defaultState() {
     lastWeekResetTs: getLastMondayResetTimestamp(new Date()),
     lastCompScore: null,
     lastCompDate: null,
-    goalMode: "prev", // "prev" ou "999"
+    bestCombatKills: 0,
+    duelWins: 0,
+    goalMode: "prev",
     currentWeekArrows: 0,
     prevWeekArrows: 0,
     logs: []
@@ -54,7 +177,6 @@ function getTodayDate() {
 }
 
 function getCurrentMonthKey(dateStr = getTodayDate()) {
-  // Format FR attendu : JJ/MM/AAAA -> retourne MM/AAAA
   const parts = String(dateStr).split("/");
   if (parts.length === 3) {
     return `${parts[1]}/${parts[2]}`;
@@ -65,7 +187,6 @@ function getCurrentMonthKey(dateStr = getTodayDate()) {
 }
 
 function getYearKey(dateStr = getTodayDate()) {
-  // Format FR attendu : JJ/MM/AAAA -> retourne AAAA
   const parts = String(dateStr).split("/");
   if (parts.length === 3) {
     return parts[2];
@@ -83,6 +204,8 @@ function loadState() {
     merged.pendingGold = Number(merged.pendingGold) || 0;
     merged.currentWeekArrows = Number(merged.currentWeekArrows) || 0;
     merged.prevWeekArrows = Number(merged.prevWeekArrows) || 0;
+    merged.bestCombatKills = Number(merged.bestCombatKills) || 0;
+    merged.duelWins = Number(merged.duelWins) || 0;
     if (typeof merged.lastWeekResetTs !== "number" || Number.isNaN(merged.lastWeekResetTs)) {
       merged.lastWeekResetTs = getLastMondayResetTimestamp(new Date());
     }
@@ -136,10 +259,11 @@ function claimPendingGoldForNewSession() {
   }
 }
 
-function awardXpAndQueueGold(xpAmount) {
+function awardXpAndQueueGold(xpAmount, extraGold = 0) {
   const cleanXp = Math.max(0, Math.round(xpAmount));
+  const cleanExtraGold = Math.max(0, Math.round(extraGold));
   state.xp += cleanXp;
-  state.pendingGold += cleanXp;
+  state.pendingGold += cleanXp + cleanExtraGold;
   state.lastSessionDate = getTodayDate();
 }
 
@@ -262,7 +386,6 @@ function upsertDailyLog({ type, arrows, pts = null, customScoreText = null, xpGa
   }
 }
 
-// Multiplicateur actif à partir de 380 / 600
 function getMultiplier(score) {
   if (score === null || score === undefined || isNaN(score) || score < 380) return 1.0;
   if (score < 450) return 1.2;
@@ -328,7 +451,7 @@ function finishSession() {
   const mult = getMultiplier(state.lastCompScore);
   const xpGained = Math.round(count * mult);
 
-  awardXpAndQueueGold(xpGained);
+  awardXpAndQueueGold(xpGained, 0);
   state.currentWeekArrows += count;
 
   upsertDailyLog({
@@ -362,7 +485,7 @@ function addQuickSession() {
   const mult = getMultiplier(state.lastCompScore);
   const xpGained = Math.round(arrows * mult);
 
-  awardXpAndQueueGold(xpGained);
+  awardXpAndQueueGold(xpGained, 0);
   state.currentWeekArrows += arrows;
 
   const numericScore = rawScore !== "" && !isNaN(Number(rawScore)) ? Number(rawScore) : null;
@@ -382,6 +505,314 @@ function addQuickSession() {
 
   saveState();
   renderAll();
+}
+
+function setCombatMode(mode) {
+  combatMode = mode;
+  renderCombat();
+}
+
+function computeCombatState() {
+  let hp = MONSTER_FIXED_HP;
+  let kills = 0;
+
+  for (const arrow of combatArrows) {
+    hp -= arrow.pts;
+    if (hp <= 0) {
+      kills += 1;
+      hp = MONSTER_FIXED_HP;
+    }
+  }
+
+  const monsterName = MONSTER_NAMES[kills % MONSTER_NAMES.length];
+  const monsterGoldEarned = kills * GOLD_PER_MONSTER;
+
+  return {
+    arrowsCount: combatArrows.length,
+    kills,
+    currentHp: hp,
+    maxHp: MONSTER_FIXED_HP,
+    monsterName,
+    monsterGoldEarned
+  };
+}
+
+function addCombatArrow(label, pts) {
+  if (combatArrows.length >= 60) return;
+
+  const before = computeCombatState();
+  combatArrows.push({ label, pts });
+  const after = computeCombatState();
+
+  const feedback = document.getElementById("combatFeedbackMsg");
+  if (after.arrowsCount === 60) {
+    feedback.textContent = `🏁 60/60 flèches tirées ! ${after.kills} monstre(s) vaincu(s) (+${after.monsterGoldEarned} 🪙). Cliquez sur « Terminer Défi ».`;
+  } else if (after.kills > before.kills) {
+    feedback.textContent = `💥 Monstre vaincu (+30 🪙) ! ${after.monsterName} #${after.kills + 1} apparaît avec 30 PV.`;
+  } else {
+    feedback.textContent = `🎯 Flèche ${label} (-${pts} PV) — Il reste ${after.currentHp} / 30 PV au monstre.`;
+  }
+
+  renderCombat();
+}
+
+function undoCombatArrow() {
+  if (combatArrows.length === 0) return;
+  combatArrows.pop();
+  const current = computeCombatState();
+  document.getElementById("combatFeedbackMsg").textContent =
+    current.arrowsCount === 0
+      ? "Chaque monstre a 30 PV. Chaque monstre vaincu = +30 🪙 en attente. Max 60 flèches !"
+      : `Flèche annulée — ${current.currentHp} / 30 PV restants (${current.kills} vaincu(s)).`;
+  renderCombat();
+}
+
+function finishCombatRun() {
+  checkWeeklyMondayReset(new Date(), false);
+  const count = combatArrows.length;
+  if (count === 0) return;
+
+  claimPendingGoldForNewSession();
+
+  const combatStats = computeCombatState();
+  const totalPts = combatArrows.reduce((sum, a) => sum + a.pts, 0);
+  const mult = getMultiplier(state.lastCompScore);
+  const xpGained = Math.round(count * mult);
+  const monsterGoldBonus = combatStats.kills * GOLD_PER_MONSTER;
+  const totalQueuedGold = xpGained + monsterGoldBonus;
+
+  if (combatStats.kills > state.bestCombatKills) {
+    state.bestCombatKills = combatStats.kills;
+  }
+
+  awardXpAndQueueGold(xpGained, monsterGoldBonus);
+  state.currentWeekArrows += count;
+
+  upsertDailyLog({
+    type: "Combat",
+    arrows: count,
+    pts: totalPts,
+    xpGained,
+    note: `Combat : ${combatStats.kills} monstre(s) battu(s) (+${monsterGoldBonus} 🪙 monstres, +${totalQueuedGold} 🪙 en attente)`
+  });
+
+  combatArrows = [];
+  document.getElementById("combatFeedbackMsg").textContent =
+    "Chaque monstre a 30 PV. Chaque monstre vaincu = +30 🪙 en attente. Max 60 flèches !";
+
+  saveState();
+  renderAll();
+  switchTab("accueil");
+}
+
+function getActiveOpponent() {
+  return AI_DUEL_OPPONENTS[selectedOpponentKey] || AI_DUEL_OPPONENTS.lvl1;
+}
+
+function getAiVolleyForOpponent(opponent, volleyIndex) {
+  const template = opponent.volleys[volleyIndex % opponent.volleys.length];
+  return template.map(shot => ({ ...shot }));
+}
+
+function changeDuelOpponent(key) {
+  if (!AI_DUEL_OPPONENTS[key]) return;
+  selectedOpponentKey = key;
+  duelCurrentVolley = [];
+  duelCompletedVolleys = [];
+  const opp = getActiveOpponent();
+  const firstVolleyStr = opp.volleys[0].map(a => a.label).join(", ");
+  const firstVolleySum = opp.volleys[0].reduce((s, a) => s + a.pts, 0);
+  document.getElementById("duelStatusMsg").textContent =
+    `Volée 1 : saisissez vos 3 flèches, ${opp.name} tirera ${firstVolleyStr} (${firstVolleySum} pts). Score final IA : ${opp.targetScore} pts.`;
+  renderDuel();
+}
+
+function computeDuelTotals() {
+  const completedPlayerSum = duelCompletedVolleys.reduce((s, v) => s + v.playerSum, 0);
+  const currentPlayerSum = duelCurrentVolley.reduce((s, a) => s + a.pts, 0);
+  const playerTotal = completedPlayerSum + currentPlayerSum;
+
+  const aiTotal = duelCompletedVolleys.reduce((s, v) => s + v.aiSum, 0);
+  const totalArrows = duelCompletedVolleys.length * 3 + duelCurrentVolley.length;
+
+  return {
+    totalArrows,
+    playerTotal,
+    aiTotal
+  };
+}
+
+function addDuelArrow(label, pts) {
+  const stats = computeDuelTotals();
+  if (stats.totalArrows >= DUEL_MAX_ARROWS) return;
+
+  const opp = getActiveOpponent();
+  duelCurrentVolley.push({ label, pts });
+
+  if (duelCurrentVolley.length === 3) {
+    const volleyIdx = duelCompletedVolleys.length;
+    const playerArrows = [...duelCurrentVolley];
+    const playerSum = playerArrows.reduce((s, a) => s + a.pts, 0);
+    const aiArrows = getAiVolleyForOpponent(opp, volleyIdx);
+    const aiSum = aiArrows.reduce((s, a) => s + a.pts, 0);
+    const prevAiCumul = volleyIdx > 0 ? duelCompletedVolleys[volleyIdx - 1].aiCumul : 0;
+    const aiCumul = prevAiCumul + aiSum;
+
+    duelCompletedVolleys.push({
+      index: volleyIdx + 1,
+      playerArrows,
+      playerSum,
+      aiArrows,
+      aiSum,
+      aiCumul
+    });
+    duelCurrentVolley = [];
+
+    const after = computeDuelTotals();
+    const statusEl = document.getElementById("duelStatusMsg");
+    if (after.totalArrows >= DUEL_MAX_ARROWS) {
+      let verdict = `Égalité (${opp.targetScore} pts) !`;
+      if (after.playerTotal > opp.targetScore) {
+        verdict = `🏆 Bravo ! Vous battez ${opp.name} (${after.playerTotal} vs ${opp.targetScore}) !`;
+      } else if (after.playerTotal < opp.targetScore) {
+        verdict = `🤖 ${opp.name} gagne (${opp.targetScore} vs ${after.playerTotal}).`;
+      }
+      statusEl.textContent = `🏁 30/30 flèches jouées ! ${verdict} Cliquez sur « Valider Duel ».`;
+    } else {
+      const nextAiVolley = getAiVolleyForOpponent(opp, volleyIdx + 1).map(a => a.label).join(", ");
+      statusEl.textContent = `Volée ${volleyIdx + 1}/10 : Vous ${playerSum} pts vs IA ${aiSum} pts (cumul IA ${aiCumul}). Volée ${volleyIdx + 2} IA : ${nextAiVolley}.`;
+    }
+  } else {
+    document.getElementById("duelStatusMsg").textContent =
+      `Volée ${duelCompletedVolleys.length + 1}/10 en cours (${duelCurrentVolley.length}/3 flèches).`;
+  }
+
+  renderDuel();
+}
+
+function undoDuelArrow() {
+  if (duelCurrentVolley.length > 0) {
+    duelCurrentVolley.pop();
+    document.getElementById("duelStatusMsg").textContent =
+      `Flèche annulée dans la volée ${duelCompletedVolleys.length + 1}/10.`;
+  } else if (duelCompletedVolleys.length > 0) {
+    const lastVolley = duelCompletedVolleys.pop();
+    duelCurrentVolley = lastVolley.playerArrows.slice(0, 2);
+    document.getElementById("duelStatusMsg").textContent =
+      `Volée ${lastVolley.index} annulée — 2 flèches conservées pour correction.`;
+  }
+  renderDuel();
+}
+
+function finishDuelMatch() {
+  checkWeeklyMondayReset(new Date(), false);
+  const stats = computeDuelTotals();
+  if (stats.totalArrows === 0) return;
+
+  claimPendingGoldForNewSession();
+
+  const opp = getActiveOpponent();
+  const mult = getMultiplier(state.lastCompScore);
+  const xpGained = Math.round(stats.totalArrows * mult);
+
+  let duelBonusGold = 0;
+  let outcomeLabel = "Match nul";
+
+  if (stats.playerTotal > opp.targetScore) {
+    duelBonusGold = 30;
+    outcomeLabel = "Victoire";
+    state.duelWins += 1;
+  } else if (stats.playerTotal === opp.targetScore) {
+    duelBonusGold = 10;
+    outcomeLabel = "Égalité";
+  } else {
+    outcomeLabel = "Défaite";
+  }
+
+  const totalQueuedGold = xpGained + duelBonusGold;
+  awardXpAndQueueGold(xpGained, duelBonusGold);
+  state.currentWeekArrows += stats.totalArrows;
+
+  upsertDailyLog({
+    type: `Duel ${opp.name}`,
+    arrows: stats.totalArrows,
+    pts: stats.playerTotal,
+    xpGained,
+    note: `Duel ${opp.name} : ${outcomeLabel} (${stats.playerTotal} vs ${opp.targetScore} pts, +${totalQueuedGold} 🪙 en attente)`
+  });
+
+  duelCurrentVolley = [];
+  duelCompletedVolleys = [];
+  const firstVolleyStr = opp.volleys[0].map(a => a.label).join(", ");
+  const firstVolleySum = opp.volleys[0].reduce((s, a) => s + a.pts, 0);
+  document.getElementById("duelStatusMsg").textContent =
+    `Volée 1 : saisissez vos 3 flèches, ${opp.name} tirera ${firstVolleyStr} (${firstVolleySum} pts). Score final IA : ${opp.targetScore} pts.`;
+
+  saveState();
+  renderAll();
+  switchTab("accueil");
+}
+
+function renderDuel() {
+  const stats = computeDuelTotals();
+  const opp = getActiveOpponent();
+
+  document.getElementById("duelOpponentSelect").value = opp.id;
+  document.getElementById("duelRecordLabel").textContent = `Victoires : ${state.duelWins}`;
+  document.getElementById("duelPlayerScore").textContent = stats.playerTotal;
+  document.getElementById("duelAiScore").textContent = stats.aiTotal;
+  document.getElementById("duelAiLabel").textContent = `${opp.name} (Cumul)`;
+  document.getElementById("duelPlayerTargetInfo").textContent = `À battre : ${opp.targetScore} pts`;
+  document.getElementById("duelAiTargetInfo").textContent = `Final IA : ${opp.targetScore} pts`;
+
+  const currentUnfinishedPlayer = duelCurrentVolley.reduce((s, a) => s + a.pts, 0);
+  document.getElementById("duelVolleyProgress").textContent = `${duelCurrentVolley.length}/3`;
+  document.getElementById("duelArrowsCount").textContent = `${stats.totalArrows} / ${DUEL_MAX_ARROWS}`;
+
+  const slots = document.getElementById("duelCurrentSlots");
+  slots.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    const div = document.createElement("div");
+    div.className = "arrow-slot";
+    div.textContent = duelCurrentVolley[i] ? duelCurrentVolley[i].label : "-";
+    slots.appendChild(div);
+  }
+  const sumSlot = document.createElement("div");
+  sumSlot.className = "arrow-slot arrow-sum";
+  sumSlot.textContent = `=${currentUnfinishedPlayer}`;
+  slots.appendChild(sumSlot);
+
+  const historyEl = document.getElementById("duelVolleysHistory");
+  if (duelCompletedVolleys.length === 0) {
+    historyEl.innerHTML = `<p class="muted">Aucune volée terminée pour l'instant (10 volées / 30 flèches).</p>`;
+  } else {
+    historyEl.innerHTML = duelCompletedVolleys.map(v => `
+      <div class="duel-volley-row">
+        <span><strong>V${v.index}</strong> : Vous <strong>${v.playerSum}</strong> (${v.playerArrows.map(a => a.label).join("-")})</span>
+        <span>IA <strong>${v.aiSum}</strong> (${v.aiArrows.map(a => a.label).join("-")}) • Cumul ${v.aiCumul}</span>
+      </div>
+    `).join("");
+  }
+}
+
+function renderCombat() {
+  const isMonsters = combatMode === "monsters";
+  document.getElementById("btnCombatModeMonsters").classList.toggle("active", isMonsters);
+  document.getElementById("btnCombatModeDuel").classList.toggle("active", !isMonsters);
+  document.getElementById("combat-subview-monsters").classList.toggle("hidden", !isMonsters);
+  document.getElementById("combat-subview-duel").classList.toggle("hidden", isMonsters);
+
+  const stats = computeCombatState();
+  document.getElementById("combatBestRecordLabel").textContent = `Record : ${state.bestCombatKills} vaincus`;
+  document.getElementById("combatArrowsCountLabel").textContent = `${stats.arrowsCount} / 60`;
+  document.getElementById("combatKillsLabel").textContent = `${stats.kills} (+${stats.monsterGoldEarned} 🪙)`;
+  document.getElementById("monsterNameLabel").textContent = `🐉 ${stats.monsterName} #${stats.kills + 1}`;
+  document.getElementById("monsterHpLabel").textContent = `${stats.currentHp} / ${stats.maxHp} PV`;
+
+  const pct = Math.max(0, Math.min(100, Math.round((stats.currentHp / stats.maxHp) * 100)));
+  document.getElementById("monsterHpBar").style.width = `${pct}%`;
+
+  renderDuel();
 }
 
 function closeCurrentWeek() {
@@ -459,7 +890,6 @@ function renderSaisie() {
   }
 }
 
-// Synthèse Carnet : Dernière séance, Dernière compétition, Dernière semaine, Mois en cours, Flèches à l'année
 function renderCarnetSummary() {
   const container = document.getElementById("carnetSummaryGrid");
   if (!container) return;
@@ -468,7 +898,6 @@ function renderCarnetSummary() {
   const currentMonthKey = getCurrentMonthKey(today);
   const currentYearKey = getYearKey(today);
 
-  // 1. Dernière séance
   const lastSession = state.logs[0] || null;
   const lastSessionMain = lastSession
     ? `🏹 ${lastSession.arrows} flèches • +${lastSession.xpGained || 0} XP`
@@ -477,7 +906,6 @@ function renderCarnetSummary() {
     ? `${lastSession.date} — ${lastSession.scoreText || "Non noté"}`
     : "Ajoutez une séance pour démarrer";
 
-  // 2. Dernière compétition
   const mult = getMultiplier(state.lastCompScore);
   const lastCompMain = state.lastCompScore !== null
     ? `🏆 ${state.lastCompScore} / 600`
@@ -486,11 +914,9 @@ function renderCarnetSummary() {
     ? `${state.lastCompDate ? `${state.lastCompDate} • ` : ""}Bonus ×${mult.toFixed(1)}`
     : "Seuil minimum : 380 / 600";
 
-  // 3. Dernière semaine (Semaine N-1)
   const lastWeekArrows = Number(state.prevWeekArrows) || 0;
   const currentWeekArrows = Number(state.currentWeekArrows) || 0;
 
-  // 4. Mois en cours (MM/AAAA)
   const monthLogs = state.logs.filter(item => getCurrentMonthKey(item.date) === currentMonthKey);
   const monthArrows = monthLogs.reduce((sum, item) => sum + (Number(item.arrows) || 0), 0);
   const monthPts = monthLogs.reduce((sum, item) => sum + (Number(item.totalPts) || 0), 0);
@@ -499,7 +925,6 @@ function renderCarnetSummary() {
     ? `Moy. ${(monthPts / monthScoredArrows).toFixed(2)} pts/flèche`
     : `${monthLogs.length} jour(s) sur ${currentMonthKey}`;
 
-  // 5. Flèches à l'année (AAAA)
   const yearLogs = state.logs.filter(item => getYearKey(item.date) === currentYearKey);
   const yearArrowsFromLogs = yearLogs.reduce((sum, item) => sum + (Number(item.arrows) || 0), 0);
   const yearArrows = Math.max(yearArrowsFromLogs, currentWeekArrows + lastWeekArrows);
@@ -626,11 +1051,12 @@ function renderAll() {
   }
 
   renderSaisie();
+  renderCombat();
 }
 
 function resetData() {
   const confirmed = window.confirm(
-    "Attention : voulez-vous vraiment effacer toute votre progression (XP, pièces d'or, scores, carnet et volumes) ?"
+    "Attention : voulez-vous vraiment effacer toute votre progression (XP, pièces d'or, scores, records de combat/duel, carnet et volumes) ?"
   );
   if (!confirmed) return;
 
@@ -638,6 +1064,9 @@ function resetData() {
   state = defaultState();
   currentVolley = [];
   sessionArrows = [];
+  combatArrows = [];
+  duelCurrentVolley = [];
+  duelCompletedVolleys = [];
   claimBannerText = "";
   renderAll();
   switchTab("accueil");
